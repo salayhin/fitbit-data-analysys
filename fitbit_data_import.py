@@ -21,9 +21,11 @@ import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
 from datetime import datetime, date, timedelta
+import sys
+from argparse import ArgumentParser
 
 #Initializing
-#file_path = '/projects/data-engineering/fitbit/fitbit-data-collection/data/'
+#file_path = '/projects/data-engineering/fitbit/fitbit-data-analysys/data/'
 file_path = '/export/sc-ehealth01/fitbit/fitbit-data-analysys/data/'
 
 #db_full_path = '/projects/data-engineering/fitbit/fitbit-data-collection/'
@@ -222,12 +224,21 @@ def _heart_rate_data(date=None):
                       encoding='utf-8') 
             
             
+		
+    
 
 
 if __name__== "__main__":
+    #get param from shell
+
+    if len(sys.argv) > 1:
+        start_date = sys.argv[1]
+    else:
+        start_date = None
+    
     ## If you use any date it will retrive specific date data, otherwise it will retrive current days data  
     print("Getting daily activity data import in progress")          
-    _get_daily_activity_summury()
+    _get_daily_activity_summury(start_date)
 
 
     # Load Daily Activity CSV File
@@ -236,7 +247,7 @@ if __name__== "__main__":
                 
     ## It will give us last one montth data  
     print("Time series steps data import In progress") 
-    _get_timeseries_steps_data()
+    _get_timeseries_steps_data(start_date)
 
 
     # Load Timeseries Steps CSV File
@@ -245,7 +256,7 @@ if __name__== "__main__":
 
     ## It will give us yesterday's sleep data if no date provided
     print("Sleep Data Import In progress") 
-    _sleep_data()
+    _sleep_data(start_date)
 
 
     # Load Sleep CSV File
@@ -254,7 +265,7 @@ if __name__== "__main__":
 
     ## It will give us yesterday's sleep data if no date provided
     print("Heart rate Import In progress") 
-    _heart_rate_data()
+    _heart_rate_data(start_date)
 
 
     # Load Heart Rate CSV File
